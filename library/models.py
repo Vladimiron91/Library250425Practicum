@@ -17,6 +17,21 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.last_name[0]}. {self.first_name}"
 
+class Book(models.Model):
+    titel = models.CharField(max_length=255, verbose_name="Название книги")
+    publication_date = models.DateField(blank=True, null=True, verbose_name="Дата публикации")
+    author = models.ForeignKey(
+        "Author",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="books"
+    )
+
+    def __str__(self):
+        return f"{self.titel} --{self.author.last_name if self.author else 'NONAME'}"
+
+
+
 """Обновите уже существующую модель Author дополнительными полями:
 Профиль: ссылка на личную страницу автора, может быть не указана
 Удалён: поле, которое позволит смотреть удалён ли этот автор из базы всех авторов.
